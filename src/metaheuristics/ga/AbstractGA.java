@@ -180,7 +180,7 @@ public abstract class AbstractGA<G extends Number, F> {
 			Population offsprings = Correct(crossover(parents));
 
 			Population mutants = Correct(mutate(offsprings));
-
+			
 			Population newpopulation = selectPopulation(mutants);
 			
 			newpopulation = Correct(diversifyPopulation(newpopulation));
@@ -419,28 +419,40 @@ public abstract class AbstractGA<G extends Number, F> {
                         
         return p;
     }
+	// fazer pela variancia do fitness
+	//se tiver alta, entao tem muita diversidade
+	//se tiver baixa, entao tem pouca diversidade
+	
+	//olhar a taxa de mutacao por 1/l
 	
 	public Population diversifyPopulation(Population p){
-		int count = 0;
+		Random rnd = new Random();
+		
+		double fit = fitness(getBestChromosome(p));
+		double fitRate = 0.95;
+		double sizeRate = 0.005;
+		
 		for(int i = 0; i < p.size(); i++){
-			for(int j = i + 1; j < p.size(); j++){
-				boolean flag = false;
+			if(fitness(p.get(i)) / fit >= fitRate) continue;
+			
+			for(int j = i + 1; j < p.size(); j++){				
+				int cont = 0;
 				
 				for(int k = 0; k < p.get(i).size(); k++){
 					if(p.get(i).get(k).intValue() != p.get(j).get(k).intValue()){
-						flag = true;
+						cont++;
 						
-						break;
+						if(cont >= sizeRate * ObjFunction.getDomainSize())
+							break;
 					}
 				}
 				
-				if(!flag){
-					count++;
-					p.set(j, generateRandomChromosome());
+				if(cont < sizeRate * ObjFunction.getDomainSize()){;
+					mutateGene(p.get(i), rnd.nextInt(ObjFunction.getDomainSize()));
 				}
 			}
 		}
-		System.out.println("Tivemos "+count+" gemeos de "+ popSize+" da populacao");
+		//System.out.println("Tivemos "+count+" gemeos de "+ popSize+" da populacao");
 		return p;
 	}
 

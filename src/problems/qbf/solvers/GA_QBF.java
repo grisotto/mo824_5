@@ -117,9 +117,11 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 	 * 
 	 */
 	public static void main(String[] args) throws IOException {
+		
+		double tam = 400.0;
 
 		long startTime = System.currentTimeMillis();
-		GA_QBF ga = new GA_QBF(10000, 20, 1.0 / 100.0, "instances/qbf060");
+		GA_QBF ga = new GA_QBF(10000, 20, 1.0 / tam, "instances/qbf400");
 		Solution<Integer> bestSol = ga.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();
