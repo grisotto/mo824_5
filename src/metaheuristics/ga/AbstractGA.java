@@ -146,6 +146,7 @@ public abstract class AbstractGA<G extends Number, F> {
 		int logL = 7 * (int)(Math.log(this.ObjFunction.getDomainSize())/ Math.log(2) );
 
 		this.popSize = ((logL % 2 == 0)?logL:logL+1);
+		//this.popSize = popSize;
 		System.out.print("Populacao:"+ this.popSize+"\t");
 		this.chromosomeSize = this.ObjFunction.getDomainSize();
 		this.mutationRate = mutationRate;
@@ -420,6 +421,7 @@ public abstract class AbstractGA<G extends Number, F> {
     }
 	
 	public Population diversifyPopulation(Population p){
+		int count = 0;
 		for(int i = 0; i < p.size(); i++){
 			for(int j = i + 1; j < p.size(); j++){
 				boolean flag = false;
@@ -427,17 +429,18 @@ public abstract class AbstractGA<G extends Number, F> {
 				for(int k = 0; k < p.get(i).size(); k++){
 					if(p.get(i).get(k).intValue() != p.get(j).get(k).intValue()){
 						flag = true;
+						
 						break;
 					}
 				}
 				
 				if(!flag){
-					//System.out.println("Here");
+					count++;
 					p.set(j, generateRandomChromosome());
 				}
 			}
 		}
-		
+		System.out.println("Tivemos "+count+" gemeos de "+ popSize+" da populacao");
 		return p;
 	}
 
