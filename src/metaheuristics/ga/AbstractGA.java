@@ -66,6 +66,9 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * the best solution cost
 	 */
 	protected Double bestCost;
+	
+	private double fitRate = 0.99;
+	private double sizeRate = 0.005;
 
 	/**
 	 * the best solution
@@ -140,6 +143,8 @@ public abstract class AbstractGA<G extends Number, F> {
 	 */
 	public AbstractGA(Evaluator<F> objFunction, Integer generations, Integer popSize, Double mutationRate) {
 		
+		System.out.print("FitRate:"+ this.fitRate+"\t");
+		System.out.print("sizeRate:"+ this.sizeRate+"\t");
 		this.ObjFunction = objFunction;
 		this.generations = generations;
 	
@@ -429,8 +434,7 @@ public abstract class AbstractGA<G extends Number, F> {
 		Random rnd = new Random();
 		
 		double fit = fitness(getBestChromosome(p));
-		double fitRate = 0.95;
-		double sizeRate = 0.005;
+
 		
 		for(int i = 0; i < p.size(); i++){
 			if(fitness(p.get(i)) / fit >= fitRate) continue;
