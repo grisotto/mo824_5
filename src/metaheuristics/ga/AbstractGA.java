@@ -160,12 +160,12 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * @return The best feasible solution obtained throughout all iterations.
 	 */
 	public Solution<F> solve() {
-		
-		
-		/* starts the initial population */
-		//nao fazemos a restricao na populacao inicial
-		Population population = Correct(initializePopulation());;
 
+		/* starts the initial population */
+		Population population = Correct(initializePopulation());
+		
+		System.out.println(population.toString());
+		
 		bestChromosome = getBestChromosome(population);
 		bestSol = decode(bestChromosome);
 		System.out.println("(Gen. " + 0 + ") BestSol = " + bestSol);
@@ -174,14 +174,15 @@ public abstract class AbstractGA<G extends Number, F> {
 		 * enters the main loop and repeats until a given number of generations
 		 */
 		for (int g = 1; g <= generations; g++) {
-
 			Population parents = selectParents(population);
 
-			Population offsprings =  Correct(crossover(parents));
+			Population offsprings = Correct(crossover(parents));
 
 			Population mutants = Correct(mutate(offsprings));
 
 			Population newpopulation = selectPopulation(mutants);
+			
+			newpopulation = Correct(diversifyPopulation(newpopulation));
 
 			population = newpopulation;
 
@@ -417,5 +418,27 @@ public abstract class AbstractGA<G extends Number, F> {
                         
         return p;
     }
+	
+	public Population diversifyPopulation(Population p){
+		for(int i = 0; i < p.size(); i++){
+			for(int j = i + 1; j < p.size(); j++){
+				boolean flag = false;
+				
+				for(int k = 0; k < p.get(i).size(); k++){
+					if(p.get(i).get(k).intValue() != p.get(j).get(k).intValue()){
+						flag = true;
+						break;
+					}
+				}
+				
+				if(!flag){
+					//System.out.println("Here");
+					p.set(j, generateRandomChromosome());
+				}
+			}
+		}
+		
+		return p;
+	}
 
 }
