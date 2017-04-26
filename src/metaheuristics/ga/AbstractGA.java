@@ -67,7 +67,10 @@ public abstract class AbstractGA<G extends Number, F> {
 	 */
 	protected Double bestCost;
 	
-	private double fitRate = 0.99;
+	//fitRate - diferenca em % do melhor fitness
+	private double fitRate = 0.98; 
+	
+	//sizeRate - % máxima aceitavel de diferença entre os membros da população
 	private double sizeRate = 0.005;
 
 	/**
@@ -151,7 +154,6 @@ public abstract class AbstractGA<G extends Number, F> {
 		int logL = 7 * (int)(Math.log(this.ObjFunction.getDomainSize())/ Math.log(2) );
 
 		this.popSize = ((logL % 2 == 0)?logL:logL+1);
-		//this.popSize = popSize;
 		System.out.print("Populacao:"+ this.popSize+"\t");
 		this.chromosomeSize = this.ObjFunction.getDomainSize();
 		this.mutationRate = mutationRate;
