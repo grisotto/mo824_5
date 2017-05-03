@@ -67,11 +67,16 @@ public abstract class AbstractGA<G extends Number, F> {
 	 */
 	protected Double bestCost;
 	
-	//fitRate - diferenca em % do melhor fitness
-	private double fitRate = 0.98; 
+      
+	/**
+	 * The % difference between the best fitness
+	 */
+	private double fitRate; 
 	
-	//sizeRate - % máxima aceitavel de diferença entre os membros da população
-	private double sizeRate = 0.005;
+	/**
+	 * The % difference between the population members
+	 */
+	private double sizeRate;
 
 	/**
 	 * the best solution
@@ -144,16 +149,18 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * @param mutationRate
 	 *            The mutation rate.
 	 */
-	public AbstractGA(Evaluator<F> objFunction, Integer generations, Integer popSize, Double mutationRate) {
+	public AbstractGA(Evaluator<F> objFunction, Integer generations, Integer popSize, Double mutationRate, Double fitRate, Double sizeRate) {
+		
+
+		this.ObjFunction = objFunction;
+		this.generations = generations;
+		this.fitRate = fitRate;
+		this.sizeRate = sizeRate;
+		this.popSize = popSize;
 		
 		System.out.print("FitRate:"+ this.fitRate+"\t");
 		System.out.print("sizeRate:"+ this.sizeRate+"\t");
-		this.ObjFunction = objFunction;
-		this.generations = generations;
 	
-		int logL = 7 * (int)(Math.log(this.ObjFunction.getDomainSize())/ Math.log(2) );
-
-		this.popSize = ((logL % 2 == 0)?logL:logL+1);
 		System.out.print("Populacao:"+ this.popSize+"\t");
 		this.chromosomeSize = this.ObjFunction.getDomainSize();
 		this.mutationRate = mutationRate;
@@ -439,6 +446,7 @@ public abstract class AbstractGA<G extends Number, F> {
 
 		
 		for(int i = 0; i < p.size(); i++){
+			//se o membro for fitRate % do melhor fitness, não comparo ele com os demais.
 			if(fitness(p.get(i)) / fit >= fitRate) continue;
 			
 			for(int j = i + 1; j < p.size(); j++){				

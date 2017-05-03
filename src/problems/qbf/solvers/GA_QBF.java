@@ -30,8 +30,8 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 	 * @throws IOException
 	 *             Necessary for I/O operations.
 	 */
-	public GA_QBF(Integer generations, Integer popSize, Double mutationRate, String filename) throws IOException {
-		super(new QBF(filename), generations, popSize, mutationRate);
+	public GA_QBF(Integer generations, Integer popSize, Double mutationRate, String filename, Double fitRate, Double sizeRate) throws IOException {
+		super(new QBF(filename), generations, popSize, mutationRate, fitRate, sizeRate);
 		System.out.println("Mutacao: %"+ mutationRate * 100);
 	}
 
@@ -117,11 +117,36 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 	 * 
 	 */
 	public static void main(String[] args) throws IOException {
+		/**
+		 * The parameters for the GA Diversity Maintenance.
+		 * 
+		 * @param instanceSize
+		 *            The size of the instance
+		 * @param popSize
+		 *            Population size.
+		 * @param logL
+		 *            Number of generations to be executed.
+		 * @param mutationRate
+		 *            The mutation rate.
+		 * @param fitRate
+		 *            The % difference between the best fitness
+		 * @param sizeRate
+		 *            The % difference between the population members
+		 */
+		double instanceSize = 100.0;
 		
-		double tam = 40.0;
+		int logL = 7 * (int)(Math.log(instanceSize)/ Math.log(2) );
+		
+		int popSize = ((logL % 2 == 0)?logL:logL+1);
+		
+		double mutationRate = 1.0 / instanceSize;
+		
+		double fitRate = 0.98; 
+		
+		double sizeRate = 0.005;
 
 		long startTime = System.currentTimeMillis();
-		GA_QBF ga = new GA_QBF(10000, 20, 1.0 / tam, "instances/qbf040");
+		GA_QBF ga = new GA_QBF(10000, popSize, mutationRate , "instances/qbf100", fitRate, sizeRate);
 		Solution<Integer> bestSol = ga.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();
