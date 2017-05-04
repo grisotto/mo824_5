@@ -317,12 +317,12 @@ public class QBF implements Evaluator<Integer> {
 	 */
 	public void printMatrix() {
 
-		for (int i = 0; i < size; i++) {
-			for (int j = i; j < size; j++) {
-				System.out.print(A[i][j] + " ");
-			}
-			System.out.println();
-		}
+		//for (int i = 0; i < size; i++) {
+			//for (int j = i; j < size; j++) {
+				//System.out.print(A[i][j] + " ");
+			//}
+			//System.out.println();
+		//}
 
 	}
 
@@ -352,9 +352,9 @@ public class QBF implements Evaluator<Integer> {
 				else
 					qbf.variables[j] = 1.0;
 			}
-			System.out.println("x = " + Arrays.toString(qbf.variables));
+			//System.out.println("x = " + Arrays.toString(qbf.variables));
 			Double eval = qbf.evaluateQBF();
-			System.out.println("f(x) = " + eval);
+			//System.out.println("f(x) = " + eval);
 			if (maxVal < eval)
 				maxVal = eval;
 		}

@@ -32,7 +32,7 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 	 */
 	public GA_QBF(Integer generations, Integer popSize, Double mutationRate, String filename, Double fitRate, Double sizeRate) throws IOException {
 		super(new QBF(filename), generations, popSize, mutationRate, fitRate, sizeRate);
-		System.out.println("Mutacao: %"+ mutationRate * 100);
+		//System.out.println("Mutacao: %"+ mutationRate * 100);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 		 * @param sizeRate
 		 *            The % difference between the population members
 		 */
-		double instanceSize = 100.0;
+		double instanceSize = 200.0;
 		
 		int logL = 7 * (int)(Math.log(instanceSize)/ Math.log(2) );
 		
@@ -144,14 +144,21 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 		double fitRate = 0.98; 
 		
 		double sizeRate = 0.005;
+		
+		for (int i = 0; i < 200; i++) {
+			long startTime = System.currentTimeMillis();
+			GA_QBF ga = new GA_QBF(10000, popSize, mutationRate , "instances/qbf200", fitRate, sizeRate);
+			Solution<Integer> bestSol = ga.solve();
+		//	System.out.println("i = "+i+" maxVal = " + bestSol);
+			long endTime = System.currentTimeMillis();
+			long totalTime = endTime - startTime;
+			System.out.println((double) totalTime / (double) 1000);
+		//	System.out.println("Time = " + (double) totalTime / (double) 1000 + " seg");
+			
+			
+		}
 
-		long startTime = System.currentTimeMillis();
-		GA_QBF ga = new GA_QBF(10000, popSize, mutationRate , "instances/qbf100", fitRate, sizeRate);
-		Solution<Integer> bestSol = ga.solve();
-		System.out.println("maxVal = " + bestSol);
-		long endTime = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		System.out.println("Time = " + (double) totalTime / (double) 1000 + " seg");
+
 
 	}
 

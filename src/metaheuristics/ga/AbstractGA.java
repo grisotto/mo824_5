@@ -158,10 +158,10 @@ public abstract class AbstractGA<G extends Number, F> {
 		this.sizeRate = sizeRate;
 		this.popSize = popSize;
 		
-		System.out.print("FitRate:"+ this.fitRate+"\t");
-		System.out.print("sizeRate:"+ this.sizeRate+"\t");
+		//System.out.print("FitRate:"+ this.fitRate+"\t");
+		//System.out.print("sizeRate:"+ this.sizeRate+"\t");
 	
-		System.out.print("Populacao:"+ this.popSize+"\t");
+		//System.out.print("Populacao:"+ this.popSize+"\t");
 		this.chromosomeSize = this.ObjFunction.getDomainSize();
 		this.mutationRate = mutationRate;
 	}
@@ -175,20 +175,28 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * @return The best feasible solution obtained throughout all iterations.
 	 */
 	public Solution<F> solve() {
+		/*
+		 * Avaliando o tempo para 2 minutos
+		 */
+		long startTime = System.currentTimeMillis();
+		long endTime = 0;
+		long totalTime = endTime - startTime;
+		
 
 		/* starts the initial population */
 		Population population = Correct(initializePopulation());
 		
-		System.out.println(population.toString());
+		//System.out.println(population.toString());
 		
 		bestChromosome = getBestChromosome(population);
 		bestSol = decode(bestChromosome);
-		System.out.println("(Gen. " + 0 + ") BestSol = " + bestSol);
+	//	System.out.println("(Gen. " + 0 + ") BestSol = " + bestSol);
 
 		/*
 		 * enters the main loop and repeats until a given number of generations
+		 * ((double) totalTime / (double) 1000) <= 120.0; g++)
 		 */
-		for (int g = 1; g <= generations; g++) {
+		for (int g = 1; g <= generations && (fitness(bestChromosome) <= 3091) && ((double) totalTime / (double) 1000) <= 300.0;g++ )  {
 			Population parents = selectParents(population);
 
 			Population offsprings = Correct(crossover(parents));
@@ -205,9 +213,13 @@ public abstract class AbstractGA<G extends Number, F> {
 
 			if (fitness(bestChromosome) > bestSol.cost) {
 				bestSol = decode(bestChromosome);
-				if (verbose)
-					System.out.println("(Gen. " + g + ") BestSol = " + bestSol);
+				//if (verbose)
+					//System.out.println("(Gen. " + g + ") BestSol = " + bestSol);
 			}
+			
+			endTime = System.currentTimeMillis();
+			totalTime = endTime - startTime;
+						
 
 		}
 
